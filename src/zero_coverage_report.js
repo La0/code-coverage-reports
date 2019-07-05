@@ -68,6 +68,23 @@ function getFileSize(size) {
 }
 
 async function generate() {
+const Test = Vue.component('Test', {
+  template: '#test',
+  props: {
+    coverage: { type: String },
+  },
+});
+
+const Sidebar = new Vue({
+  el: '#sidebar',
+  components: {"Test": Test},
+  data() {
+    return {
+      name: 'Sidebar',
+    };
+  },
+});
+
   let dir = window.location.hash.substring(1);
 
   hide('output');
