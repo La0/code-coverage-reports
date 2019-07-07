@@ -15,8 +15,6 @@ async function main(fn, opts) {
 
   monitor_options(opts, fn);
 
-  window.onhashchange = fn;
-
   fn();
 }
 

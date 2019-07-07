@@ -76,29 +76,9 @@ async function showFile(file, revision) {
   Prism.highlightAll(output);
 }
 
-function readHash() {
-  // Reads changeset & path from current URL hash
-  let hash = window.location.hash.substring(1);
-  let pos = hash.indexOf(':');
-  if (pos === -1) {
-    return ['', ''];
-  }
-  return [
-    hash.substring(0, pos),
-    hash.substring(pos+1),
-  ]
-}
-
-function updateHash(newChangeset, newPath) {
-  // Set the URL hash with both changeset & path
-  let [changeset, path] = readHash();
-  changeset = newChangeset || changeset || REV_LATEST;
-  path = newPath || path || '';
-  window.location.hash = '#' + changeset + ':' + path;
-}
-
-async function generate() {
-  let [revision, path] = readHash();
+async function generate(revision, path) {
+  revision = revision || REV_LATEST;
+  path = path || '';
 
   // Reset display
   hide('history');
@@ -133,6 +113,11 @@ async function generate() {
 }
 
 async function workflow() {
+  let router = new Navigo(null, true, '#');
+
+  router.on(/view\/(\w+)\/(.*)/, generate);
+  router.on('*', generate);
+  router.resolve();
 
   // Revision input management
   const revision = document.getElementById('revision');
@@ -141,9 +126,6 @@ async function workflow() {
       updateHash(revision.value);
     }
   };
-
-  // Default generation with latest data
-  await generate();
 };
 
 main(workflow, []);

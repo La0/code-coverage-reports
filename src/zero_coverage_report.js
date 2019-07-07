@@ -53,6 +53,8 @@ function getFileSize(size) {
 }
 
 async function generate() {
+  let router = new Navigo();
+
   let dir = window.location.hash.substring(1);
 
   hide('output');
