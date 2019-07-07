@@ -21,15 +21,6 @@ async function main(fn, opts) {
 }
 
 
-// Visualization.
-
-function getSpanForValue(value) {
-  const span = document.createElement('span');
-  span.innerText = value == 0 ? '' : value;
-  return span;
-}
-
-
 // Coverage retrieval.
 
 const COVERAGE_BACKEND_HOST = 'https://coverage.moz.tools';
@@ -44,11 +35,6 @@ async function get_path_coverage(path, changeset) {
     throw new Error(response.status + ' - ' + response.statusText);
   }
   return await response.json();
-}
-
-async function get_latest() {
-  let response = await fetch(`${COVERAGE_BACKEND_HOST}/v2/latest`);
-  return (await response.json())[0]['revision'];
 }
 
 async function get_file_coverage(changeset, path) {
@@ -239,29 +225,6 @@ function build_navbar(path, revision) {
     };
   }));
 }
-
-// Build a breadcrumb Navbar from a path
-function navbar(path, revision) {
-  let files = path.split('/');
-  files.unshift(null); // add mozilla-central
-  let nav = document.createElement('nav');
-  let base = '';
-  let href = revision !== undefined ? (revision + ':') : '';
-  files.forEach(file => {
-    let a = document.createElement('a');
-    if (file !== null) {
-      base += (base ? '/' : '') + file;
-      a.href = '#' + href + base;
-      a.textContent = file;
-    }else{
-      a.href = '#' + href;
-      a.textContent = 'mozilla-central';
-    }
-    nav.appendChild(a);
-  });
-  return nav;
-}
-
 
 // Display message as main output
 function message(cssClass, message) {
