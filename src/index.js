@@ -24,10 +24,7 @@ async function showDirectory(dir, revision, files) {
   let context = {
     navbar: build_navbar(dir, revision),
     files: files,
-    file_url: function(){
-      // Build inner navigation with revision
-      return '#' + (revision || REV_LATEST) + ':' + this.path;
-    },
+    revision: revision || REV_LATEST,
     file_name: function(){
       // Build filename relative to current dir
       return dir ? this.path.substring(dir.length+1) : this.path;
